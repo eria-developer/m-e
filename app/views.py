@@ -1,0 +1,18 @@
+from django.shortcuts import render
+
+# Create your views here.
+
+def home(request):
+    return render(request, "index.html")
+
+
+def upload_data(request):
+    return render(request, "index.html")
+
+
+def profile(request):
+    return render(request, "profile.html")
+
+
+def signout(request):
+    return render(request, "signin.html")
