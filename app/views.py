@@ -5,6 +5,9 @@ import pandas as pd
 from django.conf import settings
 import plotly.express as px
 from plotly.offline import plot
+from django.utils.timezone import now
+from django.core.exceptions import ValidationError
+import json
 
 
 def home(request):
@@ -41,8 +44,8 @@ def process_data(request, pk):
 
 
 def clean_data(df):
-    # data cleaning logic
-    df = df.dropna()
+    # replacing NaN with empty strings
+    df = df.fillna("")
     return df
 
 
@@ -51,25 +54,27 @@ def save_data_to_db(df, uploaded_file):
     cleaned_data.save()
 
 
+
+
 def visualize_data(request, pk):
     cleaned_data = models.CleanedData.objects.get(pk=pk)
     df = pd.DataFrame(cleaned_data.data)
     
     # Calculate insights
-    gender_counts = df['Res_gen'].value_counts().to_dict()
-    marital_status_counts = df['Marital_status'].value_counts().to_dict()
+    training_received_counts = df['Training Received '].value_counts().to_dict()
+    form_of_land_access_counts = df['Form of land access'].value_counts().to_dict()
 
     # Example visualization using Plotly
-    if 'Res_age' in df.columns:
-        fig = px.histogram(df, x='Res_age')
+    if 'Training Received ' in df.columns:
+        fig = px.histogram(df, x='Training Received ')
         plot_div = plot(fig, output_type='div')
     else:
-        plot_div = "Column 'Res_age' not found in the data"
+        plot_div = "Column 'Training Received ' not found in the data"
 
     context = {
         'plot_div': plot_div,
-        'gender_counts': gender_counts,
-        'marital_status_counts': marital_status_counts,
+        'training_received_counts': training_received_counts,
+        'form_of_land_access_counts': form_of_land_access_counts,
     }
 
     return render(request, 'visualization.html', context)

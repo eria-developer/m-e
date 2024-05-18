@@ -1,56 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Data Visualization</title>
+    <meta charset="UTF-8">
+    <title>Visualization</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 
 <body>
-    <h1>Data Visualization</h1>
-    <div>{{ plot_div|safe }}</div>
-
-    <h2>Gender Counts</h2>
+    <h1>Visualization</h1>
+    <div>
+        {{ plot_div|safe }}
+    </div>
+    <h2>Training Received Counts</h2>
     <ul>
-        <li>Male: {{ gender_counts.Male }}</li>
-        <li>Female: {{ gender_counts.Female }}</li>
+        {% for key, value in training_received_counts.items %}
+        <li>{{ key }}: {{ value }}</li>
+        {% endfor %}
     </ul>
 
-    <h2>Marital Status Counts</h2>
+    <h2>Form of Land Access Counts</h2>
     <ul>
-        <li>Married: {{ marital_status_counts.Married }}</li>
-        <li>Single: {{ marital_status_counts.Single }}</li>
-        <li>Divorced/Separated: {{ marital_status_counts["Divorced/Separated"] }}</li>
+        {% if form_of_land_access_counts == "Column 'Form of land access' not found in the data" %}
+        <li>{{ form_of_land_access_counts }}</li>
+        {% else %}
+        {% for key, value in form_of_land_access_counts.items %}
+        <li>{{ key }}: {{ value }}</li>
+        {% endfor %}
+        {% endif %}
     </ul>
 </body>
 
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
