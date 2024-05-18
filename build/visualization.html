@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Data Visualization</title>
+</head>
+
+<body>
+    <h1>Data Visualization</h1>
+    <div>{{ plot_div|safe }}</div>
+
+    <h2>Gender Counts</h2>
+    <ul>
+        <li>Male: {{ gender_counts.Male }}</li>
+        <li>Female: {{ gender_counts.Female }}</li>
+    </ul>
+
+    <h2>Marital Status Counts</h2>
+    <ul>
+        <li>Married: {{ marital_status_counts.Married }}</li>
+        <li>Single: {{ marital_status_counts.Single }}</li>
+        <li>Divorced/Separated: {{ marital_status_counts["Divorced/Separated"] }}</li>
+    </ul>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

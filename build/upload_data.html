@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static %}
+
+<body>
+
+  {% block content %}
+  <!-- ===== Main Content Start ===== -->
+  <main>
+    <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+      <div class="mx-auto max-w-242.5">
+        <!-- Breadcrumb Start -->
+        <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <h2 class="text-title-md2 font-bold text-black dark:text-white">
+            Upload Data
+          </h2>
+
+          <nav>
+            <ol class="flex items-center gap-2">
+              <li>
+                <a class="font-medium" href={% url "home" %}>Dashboard /</a>
+              </li>
+              <li class="text-primary">Upload Data</li>
+            </ol>
+          </nav>
+        </div>
+        <!-- Breadcrumb End -->
+
+        <!-- ====== Profile Section Start -->
+        <div
+          class="overflow-hidden rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+          <div class="relative z-20 h-35 md:h-65 h-screen">
+
+            <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+              <div class="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                <h3 class="font-medium text-black dark:text-white">
+                  Upload the file containing the data
+                </h3>
+              </div>
+              <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="flex flex-col gap-5.5 p-6.5">
+                  <div>
+                    <label for="id_file" class="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Attach file
+                    </label>
+                    <input type="file" name="file" required id="id_file"
+                      class="w-full rounded-md border border-stroke p-3 outline-none transition file:mr-4 file:rounded file:border-[0.5px] file:border-stroke file:bg-[#EEEEEE] file:px-2.5 file:py-1 file:text-sm file:font-normal focus:border-primary file:focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-strokedark dark:file:bg-white/30 dark:file:text-white" />
+
+                    <div class="mt-4 text-secondary font-bold dark:text-white">
+                      <input type="submit" value="Send" class="bg-primary px-4 py-2 text-sm rounded">
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <!-- <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Upload</button>
+              </form> -->
+
+            </div>
+          </div>
+        </div>
+        <!-- ====== Profile Section End -->
+      </div>
+    </div>
+  </main>
+  <!-- ===== Main Content End ===== -->
+  </div>
+  <!-- ===== Content Area End ===== -->
+  </div>
+  {% endblock content %}
+</body>
+
+</html>

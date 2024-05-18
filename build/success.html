@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Data upload successful{% endblock title %}
+{% block css %}
+.ml-5 {
+margin-left: 30px;
+}
+
+.mt-extra {
+margin-top: 40px
+}
+{% endblock css %}
+
+<body>
+
+    {% block content %}
+    <!-- ===== Main Content Start ===== -->
+    <main>
+        <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+            <div class="mx-auto max-w-242.5">
+                <!-- Breadcrumb Start -->
+                <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <h2 class="text-title-md2 font-bold text-black dark:text-white">
+                        Data upload successfull
+                    </h2>
+
+                    <nav>
+                        <ol class="flex items-center gap-2">
+                            <li>
+                                <a class="font-medium" href={% url "home" %}>Dashboard /</a>
+                            </li>
+                            <li class="text-primary">Data upload success</li>
+                        </ol>
+                    </nav>
+                </div>
+                <!-- Breadcrumb End -->
+
+                <!-- ====== Profile Section Start -->
+                <div
+                    class="overflow-hidden rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                    <div class="relative z-20 h-35 md:h-65 h-screen">
+
+                        <div
+                            class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                            <div class="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                                <h3 class="font-medium text-success">
+                                    Congratulations, Data has been uploaded successfully
+                                </h3>
+                            </div>
+
+
+                        </div>
+                        <div class=" mt-6.5 ml-5">
+                            <a href={% url "home" %} class="text-white bg-primary rounded text-center font-bold py-2">
+                                <button class="px-4">View data insights</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- ====== Profile Section End -->
+            </div>
+        </div>
+    </main>
+    <!-- ===== Main Content End ===== -->
+    </div>
+    <!-- ===== Content Area End ===== -->
+    </div>
+    {% endblock content %}
+</body>
+
+</html>
