@@ -11,6 +11,42 @@ import json
 from math import isnan
 from django.db.models import Count
 from collections import defaultdict
+from django.contrib.auth import login,authenticate
+from django.contrib.auth.forms import AuthenticationForm
+
+
+def user_signup(request):
+    if request.method == "POST":
+        form = forms.CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect("home")
+    else:
+        form = forms.CustomUserCreationForm()
+    context = {
+        "form": form,
+    }
+    return render(request, "user_signup.html", context)
+
+
+def user_login(request):
+    if request.method == "POST":
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password")
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect("home")
+    else:
+        form = AuthenticationForm()
+    context = {
+        "form": form,
+    }
+    return render(request, "user_login.html", context)
+
 
 
 def home(request):
