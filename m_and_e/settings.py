@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "app",
+    "wkhtmltopdf",
 ]
 
 MIDDLEWARE = [
@@ -134,3 +135,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # STATIC_URL = "/static/"
 
 AUTH_USER_MODEL = "app.CustomUser"
+
+
+WKHTMLTOPDF_CMD_OPTIONS = {
+    'quiet': True,
+}
+WKHTMLTOPDF_CMD = "/home/eria/Downloads/"

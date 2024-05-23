@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Insights Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1 {
+            color: #0056b3;
+            border-bottom: 2px solid #0056b3;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #0056b3;
+            margin-top: 40px;
+        }
+
+        p {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+
+        .chart-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Training Received Counts</h1>
+    <p>
+        {% for key, value in counts_dict.items %}
+        <p>{{ key|title }}: {{ value }}</p>
+        {% endfor %}
+    </p>
+
+    <h1>Form of Land Access</h1>
+    {% for key, value in form_of_land_access.items %}
+    <p>{{ key|title }}: {{ value }}</p>
+    {% endfor %}
+
+    <h1>Source of Seed</h1>
+    {% for key, value in source_of_seed.items %}
+    <p>{{ key|title }}: {{ value }}</p>
+    {% endfor %}
+
+    <h1>Transport Means</h1>
+    {% for key, value in transport_means.items %}
+    <p>{{ key|title }}: {{ value }}</p>
+    {% endfor %}
+
+    <h2>Pie Chart - Transport Means</h2>
+    <div class="chart-container">
+        <img src="{{ pie_chart_path }}" alt="Transport Means Pie Chart">
+    </div>
+
+    <h2>Doughnut Chart - Main Channel of Selling</h2>
+    <div class="chart-container">
+        <img src="{{ doughnut_chart_path }}" alt="Main Channel of Selling Doughnut Chart">
+    </div>
+
+    <h2>Doughnut Chart - Major Transition Method</h2>
+    <div class="chart-container">
+        <img src="{{ transition_method_chart_path }}" alt="Major Transition Method Doughnut Chart">
+    </div>
+</body>
+</html>

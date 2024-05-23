@@ -3,8 +3,8 @@ from . import forms, models
 import os
 import pandas as pd
 from django.conf import settings
-import plotly.express as px
-from plotly.offline import plot
+# import plotly.express as px
+# from plotly.offline import plot
 from django.utils.timezone import now
 from django.core.exceptions import ValidationError
 import json
@@ -152,28 +152,28 @@ def save_data_to_db(df, uploaded_file):
 
 
 
-def visualize_data(request, pk):
-    cleaned_data = models.CleanedData.objects.get(pk=pk)
-    df = pd.DataFrame(cleaned_data.data)
+# def visualize_data(request, pk):
+#     cleaned_data = models.CleanedData.objects.get(pk=pk)
+#     df = pd.DataFrame(cleaned_data.data)
     
-    # Calculate insights
-    training_received_counts = df['Training Received '].value_counts().to_dict()
-    form_of_land_access_counts = df['Form of land access'].value_counts().to_dict()
+#     # Calculate insights
+#     training_received_counts = df['Training Received '].value_counts().to_dict()
+#     form_of_land_access_counts = df['Form of land access'].value_counts().to_dict()
 
-    # Example visualization using Plotly
-    if 'Training Received ' in df.columns:
-        fig = px.histogram(df, x='Training Received ')
-        plot_div = plot(fig, output_type='div')
-    else:
-        plot_div = "Column 'Training Received ' not found in the data"
+#     # Example visualization using Plotly
+#     if 'Training Received ' in df.columns:
+#         fig = px.histogram(df, x='Training Received ')
+#         plot_div = plot(fig, output_type='div')
+#     else:
+#         plot_div = "Column 'Training Received ' not found in the data"
 
-    context = {
-        'plot_div': plot_div,
-        'training_received_counts': training_received_counts,
-        'form_of_land_access_counts': form_of_land_access_counts,
-    }
+#     context = {
+#         'plot_div': plot_div,
+#         'training_received_counts': training_received_counts,
+#         'form_of_land_access_counts': form_of_land_access_counts,
+#     }
 
-    return render(request, 'visualization.html', context)
+#     return render(request, 'visualization.html', context)
 
 
 def profile(request):
@@ -243,7 +243,7 @@ def get_training_received_counts():
 
     # Convert the defaultdict back to a regular dict if needed
     counts_dict = dict(counts_dict)
-    print(f"counts dictionary: {counts_dict}")
+    # print(f"counts dictionary: {counts_dict}")
 
     return counts_dict
 
@@ -265,7 +265,7 @@ def get_form_of_land_counts():
 
     # Convert the defaultdict back to a regular dict if needed
     counts_dict = dict(counts_dict)
-    print(f"counts dictionary: {form_of_land_access_counts}")
+    # print(f"counts dictionary: {form_of_land_access_counts}")
 
     return counts_dict
 
@@ -286,7 +286,7 @@ def get_source_of_seed_counts():
 
     # Convert the defaultdict back to a regular dict if needed
     counts_dict = dict(counts_dict)
-    print(f"counts dictionary: {source_of_seed_counts}")
+    # print(f"counts dictionary: {source_of_seed_counts}")
 
     return counts_dict
 
@@ -313,7 +313,7 @@ def get_transport_means_counts():
 
     # Convert the defaultdict back to a regular dict if needed
     counts_dict = dict(counts_dict)
-    print(f"counts dictionary: {transport_means_counts}")
+    # print(f"counts dictionary: {transport_means_counts}")
 
     return counts_dict
 
