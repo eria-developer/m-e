@@ -14,7 +14,9 @@
 
         <nav>
           <ol class="flex items-center gap-2">
-
+            <a href="#">
+              <button class="bg-primary px-4 py-2 rounded btn-sm font-medium">Generate data report</button>
+            </a>
           </ol>
         </nav>
       </div>
@@ -164,6 +166,40 @@
         <!-- Card Item End -->
       </div>
 
+
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 2xl:gap-7.5 mt-4">
+        <!-- Card Item Start -->
+        <div class="bg-white px-7.5 py-6 shadow-default dark:border-strokedark dark:bg-boxdark rounded-lg">
+          <h4 class="text-title-md font-bold text-black dark:text-white">
+            Training received
+          </h4>
+          <hr class="text-primary mt-2">
+          <div class="mt-4 flex justify-center">
+            <div class="w-full max-w-xs mx-auto">
+              <canvas id="transportMeansChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card Item End -->
+
+        <!-- Card Item Start -->
+        <div class="bg-white px-7.5 py-6 shadow-default dark:border-strokedark dark:bg-boxdark rounded-lg">
+          <h4 class="text-title-md font-bold text-black dark:text-white">
+            Major channels of selling
+          </h4>
+          <hr class="text-primary mt-2">
+          <div class="mt-4 flex justify-center">
+            <div class="w-full max-w-xs mx-auto">
+              <canvas id="main_channel_of_selling_chart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card Item End -->
+      </div>
+
+
       <div class="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
         <!-- ====== Transport means chart Start -->
         <div
@@ -178,11 +214,8 @@
           </div>
 
           <div>
-            <canvas id="transportMeansChart" class="-ml-5"></canvas>
+            <canvas id="major_transtion_method" class="-ml-5"></canvas>
           </div>
-
-
-
         </div>
         <!-- ====== Transport means chart End -->
 
@@ -663,20 +696,20 @@
   });
 
     document.addEventListener('DOMContentLoaded', (event) => {
-      var ctx = document.getElementById('transportMeansChart-sample').getContext('2d');
+      var ctx = document.getElementById('main_channel_of_selling_chart').getContext('2d');
       var transportMeansChart = new Chart(ctx, {
-        type: 'line',
+        type: 'doughnut',
         data: {
-          labels: {{ piechart_labels| safe }},
+          labels: {{ doughnut_labels| safe }},
       datasets: [{
         label: 'Transport Means',
-        data: {{ piechart_counts| safe }},
+        data: {{ doughnut_counts| safe }},
       backgroundColor: [
-        'blue',
-        'yellow',
-        'green',
-        'red',
-        'orange',
+        'gold',
+        'indigo',
+        '#FF69B4',
+        '#008000',
+        '#00FFFF',
         'rgba(255, 159, 64, 0.2)'
       ],
       borderColor: [
@@ -697,14 +730,14 @@
 });
 
     document.addEventListener('DOMContentLoaded', (event) => {
-      var ctx = document.getElementById('transportMeansChart-sample2').getContext('2d');
+      var ctx = document.getElementById('major_transtion_method').getContext('2d');
       var transportMeansChart = new Chart(ctx, {
-        type: 'pie',
+        type: 'bar',
         data: {
-          labels: {{ piechart_labels| safe }},
+          labels: {{ major_transition_method_labels| safe }},
       datasets: [{
         label: 'Transport Means',
-        data: {{ piechart_counts| safe }},
+        data: {{ major_transition_method_counts| safe }},
       backgroundColor: [
         'blue',
         'yellow',

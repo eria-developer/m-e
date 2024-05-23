@@ -28,6 +28,22 @@ def home(request):
     piechart_labels = [entry['major_transport_means'] for entry in transport_data]
     piechart_counts = [entry['count'] for entry in transport_data]
 
+    # doughnu chart configuration
+    # aggregate for main channel of selling
+    channel_of_selling_data = models.DataOne.objects.values('main_channel_of_selling').annotate(count=Count('main_channel_of_selling')).order_by('-count')
+
+    # preparing data for the doughnut
+    doughnut_labels = [entry['main_channel_of_selling'] for entry in channel_of_selling_data]
+    doughnut_counts = [entry['count'] for entry in channel_of_selling_data]
+
+    # major transition method 
+    major_transition_method = models.DataOne.objects.values('major_transition_method').annotate(count=Count('major_transition_method')).order_by('-count')
+
+    # preparing data for the doughnut
+    major_transition_method_labels = [entry['major_transition_method'] for entry in major_transition_method]
+    major_transition_method_counts = [entry['count'] for entry in major_transition_method]
+
+
     context = {
         "counts_dict": counts_dict,
         "form_of_land_access": form_of_land_access,
@@ -35,18 +51,48 @@ def home(request):
         "transport_means": transport_means,
         "piechart_labels": piechart_labels,
         "piechart_counts": piechart_counts,
+        "doughnut_labels": doughnut_labels,
+        "doughnut_counts": doughnut_counts,
+        "major_transition_method_labels": major_transition_method_labels,
+        "major_transition_method_counts": major_transition_method_counts,
     }
     return render(request, "index.html", context)
+
+
+# def upload_data(request):
+#     if request.method == "POST":
+#         form = forms.UploadFileForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             uploaded_file = form.save()
+#             return redirect("process_data", pk=uploaded_file.pk)
+#     else:
+#         form = forms.UploadFileForm()
+#     context = {
+#         "form": form,
+#     }
+#     return render(request, "upload_data.html", context)
 
 
 def upload_data(request):
     if request.method == "POST":
         form = forms.UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            uploaded_file = form.save()
-            return redirect("process_data", pk=uploaded_file.pk)
+            # Get the uploaded file
+            file = form.cleaned_data.get('file')
+            
+            # Define the path where you want to save the file
+            # You might want to customize this based on your application logic
+            file_path = os.path.join(settings.MEDIA_ROOT, file.name)
+            
+            # Save the file to the defined path
+            with open(file_path, 'wb+') as destination:
+                for chunk in file.chunks():
+                    destination.write(chunk)
+            
+            return redirect("process_data")
     else:
         form = forms.UploadFileForm()
+    
     context = {
         "form": form,
     }
@@ -164,7 +210,6 @@ def get_training_received_counts():
     print(f"counts dictionary: {counts_dict}")
 
     return counts_dict
-
 
 def get_form_of_land_counts():
     # Query to count the number of people who received training by type
