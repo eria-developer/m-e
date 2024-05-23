@@ -95,46 +95,6 @@ def home(request):
     return render(request, "index.html", context)
 
 
-# def upload_data(request):
-#     if request.method == "POST":
-#         form = forms.UploadFileForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             uploaded_file = form.save()
-#             return redirect("process_data", pk=uploaded_file.pk)
-#     else:
-#         form = forms.UploadFileForm()
-#     context = {
-#         "form": form,
-#     }
-#     return render(request, "upload_data.html", context)
-
-
-def upload_data(request):
-    if request.method == "POST":
-        form = forms.UploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            # Get the uploaded file
-            file = form.cleaned_data.get('file')
-            
-            # Define the path where you want to save the file
-            # You might want to customize this based on your application logic
-            file_path = os.path.join(settings.MEDIA_ROOT, file.name)
-            
-            # Save the file to the defined path
-            with open(file_path, 'wb+') as destination:
-                for chunk in file.chunks():
-                    destination.write(chunk)
-            
-            return redirect("process_data")
-    else:
-        form = forms.UploadFileForm()
-    
-    context = {
-        "form": form,
-    }
-    return render(request, "upload_data.html", context)
-
-
 def process_data(request):
     return render(request, "success.html")
 
@@ -148,32 +108,6 @@ def clean_data(df):
 def save_data_to_db(df, uploaded_file):
     cleaned_data = models.CleanedData(data=df.to_dict(orient="records"), uploaded_file=uploaded_file)
     cleaned_data.save()
-
-
-
-
-# def visualize_data(request, pk):
-#     cleaned_data = models.CleanedData.objects.get(pk=pk)
-#     df = pd.DataFrame(cleaned_data.data)
-    
-#     # Calculate insights
-#     training_received_counts = df['Training Received '].value_counts().to_dict()
-#     form_of_land_access_counts = df['Form of land access'].value_counts().to_dict()
-
-#     # Example visualization using Plotly
-#     if 'Training Received ' in df.columns:
-#         fig = px.histogram(df, x='Training Received ')
-#         plot_div = plot(fig, output_type='div')
-#     else:
-#         plot_div = "Column 'Training Received ' not found in the data"
-
-#     context = {
-#         'plot_div': plot_div,
-#         'training_received_counts': training_received_counts,
-#         'form_of_land_access_counts': form_of_land_access_counts,
-#     }
-
-#     return render(request, 'visualization.html', context)
 
 
 def profile(request):
@@ -269,7 +203,6 @@ def get_form_of_land_counts():
 
     return counts_dict
 
-
 def get_source_of_seed_counts():
     # Query to count the number of people who received training by type
     source_of_seed_counts = models.DataOne.objects.values('source_of_seed').annotate(count=Count('source_of_seed'))
@@ -289,7 +222,6 @@ def get_source_of_seed_counts():
     # print(f"counts dictionary: {source_of_seed_counts}")
 
     return counts_dict
-
 
 def get_transport_means_counts():
     # Query to count the number of people who received training by type
@@ -317,9 +249,110 @@ def get_transport_means_counts():
 
     return counts_dict
 
+def get_main_channel_of_selling_counts():
+    # Query to count the number of people who received training by type
+    main_channel_of_selling_counts = models.DataOne.objects.values('main_channel_of_selling').annotate(count=Count('main_channel_of_selling'))
 
+    # Initialize a dictionary to store the counts with renamed keys
+    counts_dict = defaultdict(int)
 
+    # Update the counts dictionary with the results
+    for item in main_channel_of_selling_counts:
+        if item['main_channel_of_selling'] == 'Directly to consumer (village sale)':
+            counts_dict['Directly to consumer (village sale)'] += item['count']
+        elif item['main_channel_of_selling'] == 'To–primary wholesaler–secondary wholesaler–  retailer– consumer (distant market)':
+            counts_dict['To–primary wholesaler–secondary wholesaler–  retailer– consumer (distant market)'] += item['count']
+        elif item['main_channel_of_selling'] == 'To retailer–consumer (local sale)':
+            counts_dict['To retailer–consumer (local sale)'] += item['count']
+        elif item['main_channel_of_selling'] == 'To broker–retailer–consumer':
+            counts_dict['To broker–retailer–consumer'] += item['count']
+        elif item['main_channel_of_selling'] == 'To Trader–broker–retailer–consumer.':
+            counts_dict['To Trader–broker–retailer–consumer.'] += item['count']
 
+    # Convert the defaultdict back to a regular dict if needed
+    counts_dict = dict(counts_dict)
 
+    return counts_dict
 
+def get_main_outlet_counts():
+    # Query to count the number of people who received training by type
+    main_outlet_counts = models.DataOne.objects.values('main_outlet').annotate(count=Count('main_outlet'))
 
+    # Initialize a dictionary to store the counts with renamed keys
+    counts_dict = defaultdict(int)
+
+    # Update the counts dictionary with the results
+    for item in main_outlet_counts:
+        if item['main_outlet'] == 'At gazetted market within the sub county':
+            counts_dict['At gazetted market within the sub county'] += item['count']
+        elif item['main_outlet'] == 'At the farmgate':
+            counts_dict['At the farmgate'] += item['count']
+
+    # Convert the defaultdict back to a regular dict if needed
+    counts_dict = dict(counts_dict)
+
+    return counts_dict
+
+def get_distance_to_market_analysis():
+    # Define the ranges
+    distance_ranges = {
+        '0-2': (0, 2),
+        '3-5': (3, 5),
+        '6-10': (6, 10),
+        '11-15': (11, 15),
+        '16-20': (16, 20),
+        '21-25': (21, 25),
+        '26-30': (26, 30),
+    }
+    
+    # Initialize a dictionary to store the counts for each range
+    distance_counts = defaultdict(int)
+    
+    # Fetch all records
+    all_records = models.DataOne.objects.all()
+    
+    # Iterate through the records and categorize them
+    for record in all_records:
+        distance = record.distance_to_market_km
+        if distance is not None:  # Check if distance is not None
+            for range_name, (min_val, max_val) in distance_ranges.items():
+                if min_val <= distance <= max_val:
+                    distance_counts[range_name] += 1
+                    break
+
+    # Convert the defaultdict back to a regular dict
+    distance_counts = dict(distance_counts)
+    
+    return distance_counts
+
+def get_transport_cost_analysis():
+    # Define the ranges
+    transport_cost_ranges = {
+        '1-5000': (1, 5000),
+        '5001-10000': (5001, 10000),
+        '10001-15000': (10001, 15000),
+        '15001-20000': (15001, 20000),
+        '20001-25000': (20001, 25000),
+        '25001-50000': (25001, 50000),
+        '50001-100000': (50001, 100000),
+    }
+    
+    # Initialize a dictionary to store the counts for each range
+    transport_cost_counts = defaultdict(int)
+    
+    # Fetch all records
+    all_records = models.DataOne.objects.all()
+    
+    # Iterate through the records and categorize them
+    for record in all_records:
+        cost = record.transport_cost
+        if cost is not None:  # Check if transport cost is not None
+            for range_name, (min_val, max_val) in transport_cost_ranges.items():
+                if min_val <= cost <= max_val:
+                    transport_cost_counts[range_name] += 1
+                    break
+
+    # Convert the defaultdict back to a regular dict
+    transport_cost_counts = dict(transport_cost_counts)
+    
+    return transport_cost_counts

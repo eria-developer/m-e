@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Insights Report</title>
@@ -11,13 +12,7 @@
             color: #333;
         }
 
-        h1 {
-            color: #0056b3;
-            border-bottom: 2px solid #0056b3;
-            padding-bottom: 10px;
-        }
-
-        h2 {
+        h3 {
             color: #0056b3;
             margin-top: 40px;
         }
@@ -38,44 +33,152 @@
             max-width: 100%;
             height: auto;
         }
+
+        /* Add styles for tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
     </style>
+
 </head>
+
 <body>
-    <h1>Training Received Counts</h1>
-    <p>
+    <div>
+        <h1 style="color: #0056b3; border-bottom: 2px solid #0056b3; padding-bottom: 10px;">A Report about the Prototype
+            Data</h1>
+    </div>
+    <div style="color: #0056b3;">
+        <h2> </h2>
+        <table>
+            <tr>
+                <th style="background-color: #0056b3; color:#f2f2f2">Total records uploaded:</th>
+                <th style="background-color: #0056b3; color:#f2f2f2">{{ total_records }}</th>
+            </tr>
+        </table>
+    </div>
+
+    <h3>Training Received Counts</h3>
+    <table>
+        <tr>
+            <th>Category</th>
+            <th>Value</th>
+        </tr>
         {% for key, value in counts_dict.items %}
-        <p>{{ key|title }}: {{ value }}</p>
+        <tr>
+            <td>{{ key|title }}</td>
+            <td>{{ value }}</td>
+        </tr>
         {% endfor %}
-    </p>
+    </table>
 
-    <h1>Form of Land Access</h1>
-    {% for key, value in form_of_land_access.items %}
-    <p>{{ key|title }}: {{ value }}</p>
-    {% endfor %}
+    <h3>Form of Land Access</h3>
+    <table>
+        <tr>
+            <th>Category</th>
+            <th>Value</th>
+        </tr>
+        {% for key, value in form_of_land_access.items %}
+        <tr>
+            <td>{{ key|title }}</td>
+            <td>{{ value }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 
-    <h1>Source of Seed</h1>
-    {% for key, value in source_of_seed.items %}
-    <p>{{ key|title }}: {{ value }}</p>
-    {% endfor %}
+    <h3>Source of Seed</h3>
+    <table>
+        <tr>
+            <th>Category</th>
+            <th>Value</th>
+        </tr>
+        {% for key, value in source_of_seed.items %}
+        <tr>
+            <td>{{ key|title }}</td>
+            <td>{{ value }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 
-    <h1>Transport Means</h1>
-    {% for key, value in transport_means.items %}
-    <p>{{ key|title }}: {{ value }}</p>
-    {% endfor %}
+    <h3>Transport Means</h3>
+    <table>
+        <tr>
+            <th>Category</th>
+            <th>Value</th>
+        </tr>
+        {% for key, value in transport_means.items %}
+        <tr>
+            <td>{{ key|title }}</td>
+            <td>{{ value }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 
-    <h2>Pie Chart - Transport Means</h2>
-    <div class="chart-container">
-        <img src="{{ pie_chart_path }}" alt="Transport Means Pie Chart">
-    </div>
+    <h3>Main Channel of selling</h3>
+    <table>
+        <tr>
+            <th>Category</th>
+            <th>Value</th>
+        </tr>
+        {% for key, value in main_channel_of_selling.items %}
+        <tr>
+            <td>{{ key|title }}</td>
+            <td>{{ value }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 
-    <h2>Doughnut Chart - Main Channel of Selling</h2>
-    <div class="chart-container">
-        <img src="{{ doughnut_chart_path }}" alt="Main Channel of Selling Doughnut Chart">
-    </div>
+    <h3>Main Outlet</h3>
+    <table>
+        <tr>
+            <th>Category</th>
+            <th>Value</th>
+        </tr>
+        {% for key, value in main_outlet.items %}
+        <tr>
+            <td>{{ key|title }}</td>
+            <td>{{ value }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 
-    <h2>Doughnut Chart - Major Transition Method</h2>
-    <div class="chart-container">
-        <img src="{{ transition_method_chart_path }}" alt="Major Transition Method Doughnut Chart">
-    </div>
+    <h3>Distance To Market (km)</h3>
+    <table>
+        <tr>
+            <th>Distance</th>
+            <th>No. of People</th>
+        </tr>
+        {% for key, value in distance_to_market.items %}
+        <tr>
+            <td>{{ key }}</td>
+            <td>{{ value }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3>Transport Costs</h3>
+    <table>
+        <tr>
+            <th>Cost</th>
+            <th>No. of People</th>
+        </tr>
+        {% for key, value in transport_cost.items %}
+        <tr>
+            <td>{{ key }}</td>
+            <td>{{ value }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 </body>
+
 </html>
